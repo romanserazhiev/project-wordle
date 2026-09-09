@@ -1,15 +1,9 @@
-import React from "react";
-
-function GuessInput({ onAddGuess }) {
-  const [guess, setGuess] = React.useState("");
-
+function GuessInput({ onAddGuess, currentGuess, setCurrentGuess }) {
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    if (!guess) return;
+    if (!currentGuess) return;
 
-    onAddGuess(guess);
-    console.log(`Your guess is: ${guess.toUpperCase()}`);
-    setGuess("");
+    onAddGuess(currentGuess);
   };
 
   return (
@@ -18,9 +12,9 @@ function GuessInput({ onAddGuess }) {
       <input
         id="guess-input"
         type="text"
-        value={guess}
+        value={currentGuess}
         onChange={(event) => {
-          setGuess(event.target.value);
+          setCurrentGuess(event.target.value);
         }}
         pattern="\w{5}"
         title="Provide a word with five letters"
