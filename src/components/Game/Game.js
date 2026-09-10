@@ -30,7 +30,12 @@ function Game() {
   return (
     <>
       <GuessResults guesses={guesses} answer={answer} />
-      <GuessInput currentGuess={currentGuess} setCurrentGuess={setCurrentGuess} onAddGuess={handleAddGuess} />
+      <GuessInput
+        currentGuess={currentGuess}
+        disabled={isGameOver}
+        onAddGuess={handleAddGuess}
+        setCurrentGuess={setCurrentGuess}
+      />
       {hasWon && <HappyBanner guessesAmmount={guesses.length} />}
       {hasLost && <SadBanner answer={answer} />}
     </>

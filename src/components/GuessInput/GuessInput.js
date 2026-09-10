@@ -1,4 +1,4 @@
-function GuessInput({ onAddGuess, currentGuess, setCurrentGuess }) {
+function GuessInput({ onAddGuess, currentGuess, setCurrentGuess, disabled }) {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     if (!currentGuess) return;
@@ -16,6 +16,7 @@ function GuessInput({ onAddGuess, currentGuess, setCurrentGuess }) {
         onChange={(event) => {
           setCurrentGuess(event.target.value);
         }}
+        disabled={disabled}
         pattern="\w{5}"
         title="Provide a word with five letters"
       />
