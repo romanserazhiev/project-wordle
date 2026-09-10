@@ -58,12 +58,10 @@ export function getKeyStatuses(results) {
   const keyStatuses = {};
 
   results.forEach(({ status }) => {
-    // status is an array of objects: [{ letter: 'A', status: 'correct' }, ...]
     status?.forEach(({ letter, status: letterStatus }) => {
       const currentPriority = STATUS_PRIORITY[keyStatuses[letter]] || 0;
       const newPriority = STATUS_PRIORITY[letterStatus] || 0;
 
-      // Only upgrade to a higher priority status
       if (newPriority > currentPriority) {
         keyStatuses[letter] = letterStatus;
       }

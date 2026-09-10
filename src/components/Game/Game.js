@@ -1,21 +1,23 @@
 import React from "react";
 import GuessInput from "../GuessInput";
 import GuessResults from "../GuessResults";
-import HappyBanner from "../HappyBanner";
-import SadBanner from "../SadBanner";
 import VisualKeyboard from "../VisualKeyboard";
+import GameOverBanner from "../GameOverBanner";
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
 import { sample } from "../../utils";
 import { checkGuess } from "../../game-helpers";
 import { WORDS } from "../../data";
 
 // Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
+// const answer = sample(WORDS);
 
 function Game() {
   const [guesses, setGuesses] = React.useState([]);
+  const [answer, setAnswer] = React.useState(() => {
+    const word = sample(WORDS);
+    console.info({ answer: word });
+    return word;
+  });
   const guessesWithStatus = guesses.map((guess) => ({
     word: guess,
     status: checkGuess(guess, answer),
@@ -26,9 +28,22 @@ function Game() {
   const hasLost = !hasWon && guesses.length >= NUM_OF_GUESSES_ALLOWED;
   const isGameOver = hasWon || hasLost;
 
+  let bannerStatus = null;
+  if (hasWon) {
+    bannerStatus = "win";
+  } else if (hasLost) {
+    bannerStatus = "lose";
+  }
+
   function handleAddGuess(newGuess) {
-    console.log(`Your guess is: ${newGuess.toUpperCase()}`);
     setGuesses((prevGuesses) => [...prevGuesses, newGuess]);
+  }
+
+  function handleRestart() {
+    const nextWord = sample(WORDS);
+    console.info({ answer: nextWord });
+    setAnswer(nextWord);
+    setGuesses([]);
   }
 
   return (
@@ -36,8 +51,7 @@ function Game() {
       <GuessResults results={guessesWithStatus} answer={answer} />
       <GuessInput disabled={isGameOver} onAddGuess={handleAddGuess} />
       <VisualKeyboard results={guessesWithStatus} answer={answer} />
-      {hasWon && <HappyBanner guessesAmmount={guesses.length} />}
-      {hasLost && <SadBanner answer={answer} />}
+      <GameOverBanner status={bannerStatus} guessesCount={guesses.length} answer={answer} onRestart={handleRestart} />
     </>
   );
 }

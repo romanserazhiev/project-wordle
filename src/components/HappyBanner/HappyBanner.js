@@ -1,6 +1,4 @@
-import React from "react";
-
-function HappyBanner({ guessesAmmount }) {
+function HappyBanner({ guessesAmmount, onRestart }) {
   const plural = guessesAmmount > 1;
   return (
     <div className="happy banner">
@@ -11,6 +9,7 @@ function HappyBanner({ guessesAmmount }) {
         </strong>
         .
       </p>
+      <button onClick={onRestart}>Restart</button>
     </div>
   );
 }
