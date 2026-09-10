@@ -1,11 +1,13 @@
 import React from "react";
-import { sample } from "../../utils";
-import { WORDS } from "../../data";
 import GuessInput from "../GuessInput";
 import GuessResults from "../GuessResults";
 import HappyBanner from "../HappyBanner";
+import SadBanner from "../SadBanner";
+import VisualKeyboard from "../VisualKeyboard";
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
-import SadBanner from "../SadBanner/SadBanner";
+import { sample } from "../../utils";
+import { checkGuess } from "../../game-helpers";
+import { WORDS } from "../../data";
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -14,7 +16,10 @@ console.info({ answer });
 
 function Game() {
   const [guesses, setGuesses] = React.useState([]);
-  const [currentGuess, setCurrentGuess] = React.useState("");
+  const guessesWithStatus = guesses.map((guess) => ({
+    word: guess,
+    status: checkGuess(guess, answer),
+  }));
 
   const lastGuess = guesses[guesses.length - 1];
   const hasWon = lastGuess === answer;
@@ -22,20 +27,15 @@ function Game() {
   const isGameOver = hasWon || hasLost;
 
   function handleAddGuess(newGuess) {
-    console.log(`Your guess is: ${currentGuess.toUpperCase()}`);
-    setCurrentGuess("");
-    setGuesses([...guesses, newGuess]);
+    console.log(`Your guess is: ${newGuess.toUpperCase()}`);
+    setGuesses((prevGuesses) => [...prevGuesses, newGuess]);
   }
 
   return (
     <>
-      <GuessResults guesses={guesses} answer={answer} />
-      <GuessInput
-        currentGuess={currentGuess}
-        disabled={isGameOver}
-        onAddGuess={handleAddGuess}
-        setCurrentGuess={setCurrentGuess}
-      />
+      <GuessResults results={guessesWithStatus} answer={answer} />
+      <GuessInput disabled={isGameOver} onAddGuess={handleAddGuess} />
+      <VisualKeyboard results={guessesWithStatus} answer={answer} />
       {hasWon && <HappyBanner guessesAmmount={guesses.length} />}
       {hasLost && <SadBanner answer={answer} />}
     </>

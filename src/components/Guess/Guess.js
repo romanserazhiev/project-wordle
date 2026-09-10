@@ -1,16 +1,12 @@
 import { range } from "../../utils";
-import { checkGuess } from "../../game-helpers";
 
-function Guess({ guess, answer }) {
-  const checkStatus = checkGuess(guess, answer);
-
+function Guess({ status, word }) {
   return (
     <p className="guess">
       {range(5).map((index) => {
-        const status = checkStatus ? checkStatus[index].status : "";
-        const letter = checkStatus ? checkStatus[index].letter : "";
-
-        const className = status ? `cell ${status}` : "cell";
+        const letter = word ? word[index] : "";
+        const cellStatus = status ? status[index]?.status : "";
+        const className = cellStatus ? `cell ${cellStatus}` : "cell";
 
         return (
           <span key={index} className={className}>

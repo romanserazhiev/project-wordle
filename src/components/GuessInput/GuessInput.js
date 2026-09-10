@@ -1,9 +1,14 @@
-function GuessInput({ onAddGuess, currentGuess, setCurrentGuess, disabled }) {
+import React from "react";
+
+function GuessInput({ onAddGuess, disabled }) {
+  const [input, setInput] = React.useState("");
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    if (!currentGuess) return;
+    if (!input) return;
 
-    onAddGuess(currentGuess);
+    onAddGuess(input);
+    setInput("");
   };
 
   return (
@@ -12,9 +17,9 @@ function GuessInput({ onAddGuess, currentGuess, setCurrentGuess, disabled }) {
       <input
         id="guess-input"
         type="text"
-        value={currentGuess}
+        value={input}
         onChange={(event) => {
-          setCurrentGuess(event.target.value);
+          setInput(event.target.value);
         }}
         disabled={disabled}
         pattern="\w{5}"
