@@ -19,7 +19,7 @@ function GuessInput({ onAddGuess, disabled }) {
         type="text"
         value={input}
         onChange={(event) => {
-          setInput(event.target.value);
+          setInput(event.target.value.toUpperCase());
         }}
         disabled={disabled}
         pattern="\w{5}"

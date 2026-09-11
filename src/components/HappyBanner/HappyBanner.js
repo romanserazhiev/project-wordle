@@ -1,11 +1,11 @@
-function HappyBanner({ guessesAmmount, onRestart }) {
-  const plural = guessesAmmount > 1;
+function HappyBanner({ guessesAmount, onRestart }) {
+  const plural = guessesAmount > 1;
   return (
     <div className="happy banner">
       <p>
         <strong>Congratulations!</strong> Got it in{" "}
         <strong>
-          {guessesAmmount} guess{plural && "es"}
+          {guessesAmount} guess{plural && "es"}
         </strong>
         .
       </p>
